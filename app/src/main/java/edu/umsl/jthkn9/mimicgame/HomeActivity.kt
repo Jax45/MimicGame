@@ -15,5 +15,15 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, GameActivity::class.java)
             this.startActivity(intent)
         }
+        val optionBtn: Button = this.findViewById(R.id.optionBtn)
+        optionBtn.setOnClickListener {
+            val intent = Intent(this, OptionsActivity::class.java)
+            this.startActivity(intent)
+        }
+        val scoreBtn: Button = this.findViewById(R.id.highScoreBtn)
+        scoreBtn.setOnClickListener {
+            val intent = Intent(this, ScoresActivity::class.java)
+            this.startActivity(intent)
+        }
     }
 }

@@ -100,13 +100,13 @@
         android:textAlignment="center"
         android:textSize="50sp"
         android:translationZ="5dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/playagain"
+        android:id="@+id/gamePlayBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="75dp"
@@ -114,17 +114,17 @@
         android:background="@drawable/center_circle_logo"
         android:fontFamily="@font/geostar_fill"
         android:text="@string/play"
-        android:translationZ="5dp"
-
         android:textAlignment="center"
+
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
-        android:visibility="invisible"
+        android:translationZ="5dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/linearLayout" />
 
     <Button
-        android:id="@+id/menu"
+        android:id="@+id/gameMenuBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="75dp"
@@ -132,11 +132,11 @@
         android:background="@drawable/center_circle_logo"
         android:fontFamily="@font/geostar_fill"
         android:text="@string/menu"
-        android:translationZ="5dp"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
-        android:visibility="invisible"
+        android:translationZ="5dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package edu.umsl.jthkn9.mimicgame
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.media.MediaPlayer
 import android.opengl.Visibility
 import android.os.Bundle
@@ -35,6 +36,8 @@ class GameActivity : AppCompatActivity() {
     //if it is zero then we allow button presses.
     private var animationsPlaying: Int = 0
 
+    private var isRoundOver: Boolean = true;
+
     //keep track of what spot in btnSequence we are on.
     private var btnSequenceIndex: Int = 0
 
@@ -60,6 +63,8 @@ class GameActivity : AppCompatActivity() {
         setOnTouchButtonListener(topRight,ButtonLocation.TOPRIGHT)
         setOnTouchButtonListener(botLeft,ButtonLocation.BOTTOMLEFT)
         setOnTouchButtonListener(botRight,ButtonLocation.BOTTOMRIGHT)
+
+
         //mp.start()
         pickNextButton()
         doSequenceOfButtons()
@@ -69,7 +74,11 @@ class GameActivity : AppCompatActivity() {
 
         btn.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
             when (motionEvent.action) {
-                MotionEvent.ACTION_DOWN -> if(this.animationsPlaying <= 0) {
+                //if the round is not over yet, the animations are not playing, and the game is not over
+                MotionEvent.ACTION_DOWN -> if(!isRoundOver && this.animationsPlaying == 0 && !gameOver) {
+                    if (btnSequenceIndex == btnSequence.size - 1){
+                        isRoundOver = true;
+                    }
                     btn.alpha = 0.2f
                     btnChosen(btnLocation)
                     if(!gameOver) {
@@ -104,13 +113,21 @@ class GameActivity : AppCompatActivity() {
         //rumble the phone
 
         //show game over
-        val gameOver: TextView = this.findViewById(R.id.gameOver)
-        //val menuBtn: Button = this.findViewById(R.id.menu)
-        //val playBtn: Button = this.findViewById(R.id.playButton)
-
-        gameOver.visibility = View.VISIBLE
-//        menuBtn.visibility = View.VISIBLE
-//        playBtn.visibility = View.VISIBLE
+        val gameOverTextView: TextView = this.findViewById(R.id.gameOver)
+//        val menuBtn: Button = this.findViewById(R.id.menu)
+//        val playBtn: Button = this.findViewById(R.id.playButton)
+//set gameover listeners
+        val menuBtn: Button = this.findViewById(R.id.gameMenuBtn)
+        menuBtn.setOnClickListener {
+            if(gameOver) {
+                dieSound.stop()
+                onBackPressed()
+            }
+        }
+        val playBtn: Button = this.findViewById(R.id.gamePlayBtn)
+        gameOverTextView.visibility = View.VISIBLE
+        menuBtn.visibility = View.VISIBLE
+        playBtn.visibility = View.VISIBLE
         //play gameover sound.
         dieSound.start()
 
@@ -160,7 +177,8 @@ class GameActivity : AppCompatActivity() {
             Animation.REVERSE // Reverse animation at the end so the button will fade back in
         flashAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationRepeat(animation: Animation?) {
-                //Not needed
+                //animationsPlaying--
+                //Does this happen ever and not trigger end or start?
             }
 
             override fun onAnimationEnd(animation: Animation?) {
@@ -168,7 +186,6 @@ class GameActivity : AppCompatActivity() {
             }
 
             override fun onAnimationStart(animation: Animation?) {
-                animationsPlaying++
             }
 
         })
@@ -200,12 +217,14 @@ class GameActivity : AppCompatActivity() {
         val aniHandler =  Handler()
         var waitTime = 500L
         for (btn in btnSequence){
+            animationsPlaying++
             aniHandler.postDelayed(Runnable {
                 lightUpButton(btn,false)
 
             },waitTime)
             waitTime += 800
         }
+        isRoundOver = false
     }
 }
 
